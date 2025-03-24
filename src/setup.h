@@ -39,14 +39,11 @@ float Gyro_amount = 0.996;
 float Gyro_amount_x = 0.996;
 uint8_t motor_speed_x_divisor = 5;
 uint8_t motor_speed_y_divisor = 5;
-uint8_t motor_speed_up = 0;
-uint8_t motor_speed_up_delay = 0;
-bool speed_up = false;
+uint8_t motor_init_spin = 0;
+uint8_t motor_init_spin_delay = 0;
+bool init_spin = false;
 bool slow_down = false;
-bool capt_speed = false;
-uint8_t capt_speed_val = 0;
-uint8_t motor_hold_delay = 0;
-bool toggle_speed_up = true;
+bool toggle_init_spin = true;
 
 bool vertical_vertex = false;
 bool vertical_edge = false;
@@ -56,6 +53,7 @@ bool calibrated = false;
 bool calibrated_leds = false;
 bool ledState = false;
 bool ledStateSwitch = false;
+bool off_mode = false;
 
 // Sound
 uint8_t octave = 1;
@@ -78,6 +76,8 @@ float eK4 = 0.014;
 int loop_time = 15;
 
 float speed_offset = 0.866;
+float gyroScaleFactor = loop_time / 1000.0 / 65.536;
+float radToDeg = 57.2958;
 
 ///
 struct PIDParams
@@ -111,6 +111,7 @@ float alpha = 0.7;
 int16_t AcX, AcY, AcZ, AcXc, AcYc, AcZc, GyX, GyY, GyZ;
 float gyroX, gyroY, gyroZ, gyroXfilt, gyroYfilt, gyroZfilt;
 float speed_X, speed_Y;
+float x_offset = 0.0;
 
 int16_t GyZ_offset = 0;
 int16_t GyY_offset = 0;

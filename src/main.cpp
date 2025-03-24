@@ -194,18 +194,25 @@ class MyCallbacks : public BLECharacteristicCallbacks
       }
       if (command.equals("9"))
       {
-        speed_up = true;
+        init_spin = true;
         Serial.println("Speed Increase");
         sendData("\r\n Speed Increase");
       }
       if (command.equals("0"))
       {
-        std::string message = createMessage("Battery Voltage: ", (double)analogRead(VBAT) / 204);
-        sendData(message.c_str());
+        slow_down = true;
+        // std::string message = createMessage("Battery Voltage: ", (double)analogRead(VBAT) / 204);
+        // sendData(message.c_str());
       }
       if (command.equals("s"))
       {
         std::string message = createMessage("motors_speed_X: ", motors_speed_X);
+        sendData(message.c_str());
+      }
+      if (command.equals("x"))
+      {
+        x_offset += 0.01;
+        std::string message = createMessage("x_offset;: ", x_offset);
         sendData(message.c_str());
       }
     }
@@ -524,9 +531,6 @@ void angle_calc()
 
 void calculateAngles()
 {
-  const float gyroScaleFactor = loop_time / 1000.0 / 65.536;
-  const float radToDeg = 57.2958;
-
   // Update robot angles using gyroscope data
   robot_angleY += GyY * gyroScaleFactor;
   robot_angleX += GyX * gyroScaleFactor;
@@ -580,17 +584,35 @@ void updateVerticalState()
     break;
 
   case VERTICAL_NONE:
+    if (off_mode)
+    {
+      FastLED.clear();
+      FastLED.show();
+      tone(BUZZER, 3186, 100, channel);
+      delay(100);
+      tone(BUZZER, 2186, 100, channel);
+      off_mode = false;
+    }
+
     if (abs(AcX) < 2000 && abs(Acc_angleX) < 0.4 && abs(Acc_angleY) < 0.4)
     {
       robot_angleX = Acc_angleX;
       robot_angleY = Acc_angleY;
       currentState = VERTICAL_VERTEX;
+      leds[4] = CRGB::Blue; // Set LED color
+      FastLED.show();
+      tone(BUZZER, 2186, 100, channel);
+      off_mode = true;
     }
     else if (abs(AcX) > 7000 && abs(AcX) < 10000 && abs(Acc_angleX) < 0.3)
     {
       robot_angleX = Acc_angleX;
       robot_angleY = Acc_angleY;
       currentState = VERTICAL_EDGE;
+      leds[4] = CRGB::Yellow; // Set LED color
+      FastLED.show();
+      tone(BUZZER, 2186, 100, channel);
+      off_mode = true;
     }
     break;
   }
@@ -730,54 +752,35 @@ void pwmSet(uint8_t channel, uint32_t value)
 
 void Motor_control(int motor_number, int sp, int motor_speed, uint8_t dir_pin, uint8_t pwm_channel)
 {
-  if (speed_up && motor_number == 2)
+  if (motor_number == 2)
   {
-    if (motor_speed_up < 200)
+    if (init_spin)
     {
-      toggle_speed_up ? motor_speed_up++ : motor_speed_up = motor_speed_up;
-      toggle_speed_up = !toggle_speed_up;
-    }
-    else
-    {
-      if (motor_speed_up_delay < 200)
+      if (motor_init_spin < 250 && !slow_down)
       {
-        toggle_speed_up ? motor_speed_up_delay++ : motor_speed_up_delay = motor_speed_up_delay;
-        toggle_speed_up = !toggle_speed_up;
+        toggle_init_spin ? motor_init_spin++ : motor_init_spin = motor_init_spin;
+        toggle_init_spin = !toggle_init_spin;
       }
       else
       {
-        if (motor_hold_delay < 255)
+        slow_down = true;
+        if (motor_init_spin_delay < 250)
         {
-          toggle_speed_up ? motor_hold_delay++ : motor_hold_delay = motor_hold_delay;
-          toggle_speed_up = !toggle_speed_up;
+          toggle_init_spin ? motor_init_spin_delay++ : motor_init_spin_delay = motor_init_spin_delay;
+          toggle_init_spin ? motor_init_spin-- : motor_init_spin = motor_init_spin;
+          toggle_init_spin = !toggle_init_spin;
         }
         else
         {
-          speed_up = false;
-          slow_down = true;
-          motor_hold_delay = 0;
-          toggle_speed_up = true;
-          motor_speed_up_delay = 0;
-          sendData("\r\n Slow down initiated.");
+          init_spin = false;
+          slow_down = false;
+          toggle_init_spin = true;
+          motor_init_spin_delay = 0;
+          motor_init_spin = 0;
         }
       }
     }
-    sp = sp + (motor_speed - motor_speed_up);
-  }
-  else if (slow_down && motor_number == 2)
-  {
-    if (motor_speed_up > 0)
-    {
-      toggle_speed_up ? motor_speed_up-- : motor_speed_up = motor_speed_up;
-      toggle_speed_up = !toggle_speed_up;
-    }
-    else
-    {
-      slow_down = false;
-      toggle_speed_up = true;
-      sendData("\r\n Slow down finished");
-    }
-    sp = sp + (motor_speed - motor_speed_up);
+    sp = sp + (motor_speed - motor_init_spin);
   }
   else
   {
