@@ -4,6 +4,7 @@
 #include "AngleCalibration.h"
 #include "BLEHandler.h"
 #include "setup.h"
+#include "LEDControl.h"
 
 // Define state-related variables here if needed
 // extern declarations for shared variables can be added if required
@@ -57,13 +58,12 @@ namespace StateManager
 	{
 		for (int i = 0; i < NUM_LEDS; i++)
 		{
-			leds[i] = CRGB::Green; // Set LED color
-			FastLED.show();
+			LEDControl::setLEDColor(i, CRGB::Green);
+			tone(BUZZER, 2186 + (i * 100), 100, channel);
 			delay(80);
 		}
 		delay(500);
-		FastLED.clear();
-		FastLED.show();
+		LEDControl::clearLEDs();
 		AngleCalibration::playNotes(4186, 4186, 4186, 100);
 	}
 
@@ -107,8 +107,7 @@ namespace StateManager
 		case VERTICAL_NONE:
 			if (off_mode)
 			{
-				FastLED.clear();
-				FastLED.show();
+				LEDControl::clearLEDs();
 				tone(BUZZER, 3186, 100, channel);
 				delay(100);
 				tone(BUZZER, 2186, 100, channel);
@@ -136,8 +135,7 @@ namespace StateManager
 				robot_angleX = Acc_angleX;
 				robot_angleY = Acc_angleY;
 				currentState = VERTICAL_VERTEX;
-				leds[4] = CRGB::Blue; // Set LED color
-				FastLED.show();
+				LEDControl::setLEDColor(4, CRGB::Blue);
 				tone(BUZZER, 2186, 100, channel);
 				off_mode = true;
 			}
@@ -146,8 +144,7 @@ namespace StateManager
 				robot_angleX = Acc_angleX;
 				robot_angleY = Acc_angleY;
 				currentState = VERTICAL_EDGE;
-				leds[4] = CRGB::Yellow; // Set LED color
-				FastLED.show();
+				LEDControl::setLEDColor(4, CRGB::Yellow);
 				tone(BUZZER, 2186, 100, channel);
 				off_mode = true;
 			}

@@ -91,13 +91,16 @@ namespace BLEHandler
 				}
 				if (command.equals("9"))
 				{
+					motor_init_spin = 0;
 					init_spin = true;
 					spin_hold_time = millis() + 100000;
 					sendData("\r\n Speed Increase");
 				}
 				if (command.equals("0"))
 				{
-					slow_down = true;
+					init_spin = false;
+					slow_down = false;
+					toggle_init_spin = true;
 					// std::string message = createMessage("Battery Voltage: ", (double)analogRead(VBAT) / 204);
 					// sendData(message.c_str());
 				}

@@ -11,8 +11,10 @@
 #define VOLTS 3.3
 #define MAX_AMPS 500 // milliamps
 
-void initLEDs();
-void setLEDColor(int index, CRGB color);
-void clearLEDs();
-
+namespace LEDControl
+{
+	void initLEDs();
+	void setLEDColor(int index, CRGB color);
+	void clearLEDs();
+}
 #endif // LEDCONTROL_H

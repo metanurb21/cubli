@@ -45,38 +45,29 @@ namespace MotorControl
 	void Motor_control(int motor_number, int sp, int motor_speed, uint8_t dir_pin, uint8_t pwm_channel)
 	{
 		// Quick hack to make it spin. Send "9" over BLE
-		if (motor_number == 2)
+		if (motor_number == 2 && init_spin)
 		{
-			if (init_spin)
+			if (motor_init_spin < rotate_speed && !slow_down)
 			{
-				if (motor_init_spin < rotate_speed && !slow_down)
-				{
-					toggle_init_spin ? motor_init_spin++ : motor_init_spin = motor_init_spin;
-					toggle_init_spin = !toggle_init_spin;
-				}
-				else
-				{
-					slow_down = true;
-					current_spin_hold_time = millis();
-					if (current_spin_hold_time < spin_hold_time)
-					{
-						previous_spin_hold_time = current_spin_hold_time;
-					}
-					else
-					{
-						init_spin = false;
-						slow_down = false;
-						toggle_init_spin = true;
-						motor_init_spin = 0;
-						previous_spin_hold_time = 0;
-					}
-				}
-				sp = sp + (motor_speed - motor_init_spin);
+				toggle_init_spin ? motor_init_spin++ : motor_init_spin = motor_init_spin;
+				toggle_init_spin = !toggle_init_spin;
 			}
 			else
 			{
-				sp = sp + motor_speed;
+				slow_down = true;
+				current_spin_hold_time = millis();
+				if (current_spin_hold_time < spin_hold_time)
+				{
+					previous_spin_hold_time = current_spin_hold_time;
+				}
+				else
+				{
+					slow_down = false;
+					toggle_init_spin = true;
+					previous_spin_hold_time = 0;
+				}
 			}
+			sp = sp + (motor_speed - motor_init_spin);
 		}
 		else
 		{

@@ -197,8 +197,13 @@ namespace AngleCalibration
 			calibrated = true;
 		}
 		calibrating = false;
-		BLEHandler::sendData("Saved, Calibrating off.");
+		BLEHandler::sendData("Gyro settings saved, Calibration complete.");
+		for (int i = 0; i < NUM_LEDS; i++)
+		{
+			LEDControl::setLEDColor(i, CRGB::Blue);
+		}
 		AngleCalibration::playNotes(4186, 4699, 5274, 100);
-		delay(300);
+		delay(500);
+		LEDControl::clearLEDs();
 	}
 }

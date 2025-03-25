@@ -37,7 +37,7 @@ void setup()
 
   EEPROM.begin(EEPROM_SIZE);
 
-  initLEDs();
+  LEDControl::initLEDs();
   MotorControl::initializeMotors(); // Initialize motors using the new MotorControl class
   StateManager::initializeState();  // Initialize state management
 
@@ -49,14 +49,12 @@ void setup()
 
   for (int i = 0; i < NUM_LEDS; i++)
   {
-    leds[i] = CRGB::Blue; // Set LED color
-    FastLED.show();
+    LEDControl::setLEDColor(i, CRGB::Blue); // Set LED color
     tone(BUZZER, 2186 + (i * 100), 100, channel);
     delay(80);
   }
   delay(500);
-  FastLED.clear();
-  FastLED.show();
+  LEDControl::clearLEDs();
 
   AngleCalibration::initializeCalibration(); // Initialize angle and calibration
   BLEHandler::sendData("Hello from Balancing Cube");
