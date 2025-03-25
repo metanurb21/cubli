@@ -43,44 +43,6 @@
 #define EEPROM_SIZE 64
 #define NUM_LEDS 9
 
-// // MPU6050 configuration
-// #define MPU6050 0x68
-// #define PWR_MGMT_1 0x6B
-// #define ACCEL_CONFIG 0x1C
-// #define GYRO_CONFIG 0x1B
-// #define accSens 0
-// #define gyroSens 0
-
-// // Motor control pins
-// #define DIR1 25
-// #define DIR2 26
-// #define DIR3 27
-// #define PWM1 14
-// #define PWM2 12
-// #define PWM3 13
-// #define ENC1_1 34
-// #define ENC1_2 35
-// #define ENC2_1 32
-// #define ENC2_2 33
-// #define ENC3_1 36
-// #define ENC3_2 39
-// #define BRAKE 4
-// #define VBAT 34
-
-// // LED and buzzer
-// #define BUZZER 15
-// #define NUM_LEDS 9
-
-// // EEPROM size
-// #define EEPROM_SIZE 512
-
-// // Motor PWM channels
-// #define PWM1_CH 0
-// #define PWM2_CH 1
-// #define PWM3_CH 2
-// #define BASE_FREQ 5000
-// #define TIMER_BIT 8
-
 // Global variables
 extern int16_t motor1_speed;
 extern int16_t motor2_speed;
@@ -147,10 +109,14 @@ extern long currentT;
 extern long previousT_1;
 extern long previousT_2;
 extern int loop_time;
+extern long spin_hold_time;
+extern long current_spin_hold_time;
+extern long previous_spin_hold_time;
 extern int channel;
 extern int freq;
 extern int dure;
 extern float radToDeg;
+extern int rotate_speed;
 
 extern bool vertical_vertex;
 extern bool vertical_edge;

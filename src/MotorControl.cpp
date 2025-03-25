@@ -49,7 +49,7 @@ namespace MotorControl
 		{
 			if (init_spin)
 			{
-				if (motor_init_spin < 250 && !slow_down)
+				if (motor_init_spin < rotate_speed && !slow_down)
 				{
 					toggle_init_spin ? motor_init_spin++ : motor_init_spin = motor_init_spin;
 					toggle_init_spin = !toggle_init_spin;
@@ -57,23 +57,26 @@ namespace MotorControl
 				else
 				{
 					slow_down = true;
-					if (motor_init_spin_delay < 250)
+					current_spin_hold_time = millis();
+					if (current_spin_hold_time < spin_hold_time)
 					{
-						toggle_init_spin ? motor_init_spin_delay++ : motor_init_spin_delay = motor_init_spin_delay;
-						toggle_init_spin ? motor_init_spin-- : motor_init_spin = motor_init_spin;
-						toggle_init_spin = !toggle_init_spin;
+						previous_spin_hold_time = current_spin_hold_time;
 					}
 					else
 					{
 						init_spin = false;
 						slow_down = false;
 						toggle_init_spin = true;
-						motor_init_spin_delay = 0;
 						motor_init_spin = 0;
+						previous_spin_hold_time = 0;
 					}
 				}
+				sp = sp + (motor_speed - motor_init_spin);
 			}
-			sp = sp + (motor_speed - motor_init_spin);
+			else
+			{
+				sp = sp + motor_speed;
+			}
 		}
 		else
 		{

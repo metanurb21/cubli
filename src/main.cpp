@@ -1,5 +1,6 @@
 /*
-  ESP32 Balance cube based on REMRC: https://github.com/remrc/Self-Balancing-Cube/blob/main/README.md
+  ESP32 Balance cube by David Stewart, dave@metanurb.com 03/25
+  Based on REMRC: https://github.com/remrc/Self-Balancing-Cube/blob/main/README.md
   Some refactoring made to update for my needs, and BLE connection so it can work with my iPhone.
   Added FastLED library for LED control.
   Added ability to initiate spinning of the cube.

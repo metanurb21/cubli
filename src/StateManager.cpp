@@ -113,6 +113,22 @@ namespace StateManager
 				delay(100);
 				tone(BUZZER, 2186, 100, channel);
 				off_mode = false;
+				motor1_speed = 0;
+				enc_count1 = 0;
+				motor2_speed = 0;
+				enc_count2 = 0;
+				motor3_speed = 0;
+				enc_count3 = 0;
+				speed_X = 0;
+				speed_Y = 0;
+				motors_speed_X = 0;
+				motors_speed_Y = 0;
+				motors_speed_Z = 0;
+				init_spin = false;
+				slow_down = false;
+				toggle_init_spin = true;
+				motor_init_spin = 0;
+				previous_spin_hold_time = 0;
 			}
 
 			if (abs(AcX) < 2000 && abs(Acc_angleX) < 0.4 && abs(Acc_angleY) < 0.4)

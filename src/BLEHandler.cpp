@@ -2,8 +2,6 @@
 #include <BLEUtils.h>
 #include <BLEServer.h>
 #include "BLEHandler.h"
-// #include <Wire.h>
-// #include <Arduino.h>
 #include "AngleCalibration.h"
 #include "setup.h"
 
@@ -11,7 +9,7 @@ namespace BLEHandler
 {
 	BLECharacteristic *pBiDirectionalCharacteristic;
 
-	// Function to concatenate a string and an int32_t
+	// Function to concatenate a string and a number
 	std::string createMessage(const std::string &text, int32_t value)
 	{
 		return "\r\n" + text + std::to_string(value);
@@ -27,7 +25,6 @@ namespace BLEHandler
 			{
 				String command = String(receivedData.c_str());
 				command.trim();
-				// Serial.print("Received: ");
 				Serial.println(command);
 				if (command.equals("c") && !calibrating)
 				{
@@ -95,6 +92,7 @@ namespace BLEHandler
 				if (command.equals("9"))
 				{
 					init_spin = true;
+					spin_hold_time = millis() + 100000;
 					sendData("\r\n Speed Increase");
 				}
 				if (command.equals("0"))
