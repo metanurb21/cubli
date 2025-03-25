@@ -21,12 +21,10 @@ namespace StateManager
 	{
 		if (currentState == VERTICAL_VERTEX && calibrated && !calibrating)
 		{
-			BLEHandler::sendData("Vertex balancing mode");
 			handleVerticalVertexState();
 		}
 		else if (currentState == VERTICAL_EDGE && calibrated && !calibrating)
 		{
-			BLEHandler::sendData("Edge balancing mode");
 			handleVerticalEdgeState();
 		}
 		else

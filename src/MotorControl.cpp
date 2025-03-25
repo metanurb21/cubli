@@ -44,6 +44,7 @@ namespace MotorControl
 
 	void Motor_control(int motor_number, int sp, int motor_speed, uint8_t dir_pin, uint8_t pwm_channel)
 	{
+		// Quick hack to make it spin. Send "9" over BLE
 		if (motor_number == 2)
 		{
 			if (init_spin)
