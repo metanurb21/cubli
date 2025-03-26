@@ -43,6 +43,12 @@
 #define EEPROM_SIZE 64
 #define NUM_LEDS 9
 
+// BLE
+#define DEVICE_NAME "ESP32_BLE_Cube"
+#define SERVICE_UUID "0000FF00-0000-1000-8000-00805F9B34FB"
+#define CHAR_UUID "0000FF01-0000-1000-8000-00805F9B34FB"
+#define CHAR_UUID_NOTIFY "0000FF02-0000-1000-8000-00805F9B34FB" // New UUID for sending data
+
 // Global variables
 extern int16_t motor1_speed;
 extern int16_t motor2_speed;

@@ -15,6 +15,7 @@ namespace LEDControl
 {
 	void initLEDs();
 	void setLEDColor(int index, CRGB color);
+	void setAllLEDs(CRGB color, bool delay, uint32_t duration);
 	void clearLEDs();
 }
 #endif // LEDCONTROL_H

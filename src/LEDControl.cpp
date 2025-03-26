@@ -1,5 +1,6 @@
 #include "LEDControl.h"
 #include "setup.h"
+#include <FastLED.h>
 
 namespace LEDControl
 {
@@ -18,6 +19,22 @@ namespace LEDControl
 		{
 			leds[index] = color;
 			FastLED.show();
+		}
+	}
+
+	void setAllLEDs(CRGB color, bool delay, uint32_t duration)
+	{
+		for (int i = 0; i < NUM_LEDS; i++)
+		{
+			leds[i] = color;
+			FastLED.delay(80);
+		}
+
+		FastLED.show();
+		if (delay)
+		{
+			FastLED.delay(duration);
+			clearLEDs();
 		}
 	}
 

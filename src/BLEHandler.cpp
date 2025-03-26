@@ -4,16 +4,11 @@
 #include "BLEHandler.h"
 #include "AngleCalibration.h"
 #include "setup.h"
+#include "Utils.h"
 
 namespace BLEHandler
 {
 	BLECharacteristic *pBiDirectionalCharacteristic;
-
-	// Function to concatenate a string and a number
-	std::string createMessage(const std::string &text, int32_t value)
-	{
-		return "\r\n" + text + std::to_string(value);
-	}
 
 	// Callback class to handle incoming data
 	class MyCallbacks : public BLECharacteristicCallbacks
@@ -101,13 +96,10 @@ namespace BLEHandler
 					init_spin = false;
 					slow_down = false;
 					toggle_init_spin = true;
-					// std::string message = createMessage("Battery Voltage: ", (double)analogRead(VBAT) / 204);
-					// sendData(message.c_str());
 				}
 				if (command.equals("s"))
 				{
-					std::string message = createMessage("motors_speed_X: ", motors_speed_X);
-					sendData(message.c_str());
+					sendData(UTILS::createMessage("motors_speed_X: ", motors_speed_X).c_str());
 				}
 			}
 		}

@@ -37,15 +37,9 @@ namespace AngleCalibration
 			delay(5);
 		}
 		GyZ_offset = GyZ_offset_sum >> 9;
-		for (int i = 0; i < NUM_LEDS; i++)
-		{
-			leds[i] = CRGB::Red; // Set LED color
-			FastLED.show();
-			delay(80);
-		}
-		delay(500);
-		FastLED.clear();
-		FastLED.show();
+
+		LEDControl::setAllLEDs(CRGB::Red, true, 100);
+
 		for (int i = 0; i < 512; i++)
 		{
 			angleCalc();
@@ -53,15 +47,9 @@ namespace AngleCalibration
 			delay(5);
 		}
 		GyY_offset = GyY_offset_sum >> 9;
-		for (int i = 0; i < NUM_LEDS; i++)
-		{
-			leds[i] = CRGB::Blue; // Set LED color
-			FastLED.show();
-			delay(80);
-		}
-		delay(500);
-		FastLED.clear();
-		FastLED.show();
+
+		LEDControl::setAllLEDs(CRGB::Blue, true, 100);
+
 		for (int i = 0; i < 512; i++)
 		{
 			angleCalc();
@@ -69,15 +57,9 @@ namespace AngleCalibration
 			delay(5);
 		}
 		GyX_offset = GyX_offset_sum >> 9;
-		for (int i = 0; i < NUM_LEDS; i++)
-		{
-			leds[i] = CRGB::Green; // Set LED color
-			FastLED.show();
-			delay(80);
-		}
-		delay(500);
-		FastLED.clear();
-		FastLED.show();
+
+		LEDControl::setAllLEDs(CRGB::Green, true, 100);
+
 		playNotes(4186, 4186, 4186, 100);
 	}
 
@@ -198,10 +180,7 @@ namespace AngleCalibration
 		}
 		calibrating = false;
 		BLEHandler::sendData("Gyro settings saved, Calibration complete.");
-		for (int i = 0; i < NUM_LEDS; i++)
-		{
-			LEDControl::setLEDColor(i, CRGB::Blue);
-		}
+		LEDControl::setAllLEDs(CRGB::BlueViolet, false, 0);
 		AngleCalibration::playNotes(4186, 4699, 5274, 100);
 		delay(500);
 		LEDControl::clearLEDs();

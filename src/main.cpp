@@ -14,21 +14,7 @@
 #include "MotorControl.h"     // Include the new motor control header
 #include "StateManager.h"     // Include the new state management header
 #include "AngleCalibration.h" // Include the new angle and calibration header
-
-#define DEVICE_NAME "ESP32_BLE_Cube"
-#define SERVICE_UUID "0000FF00-0000-1000-8000-00805F9B34FB"
-#define CHAR_UUID "0000FF01-0000-1000-8000-00805F9B34FB"
-#define CHAR_UUID_NOTIFY "0000FF02-0000-1000-8000-00805F9B34FB" // New UUID for sending data
-
-void battVoltage(double voltage);
-void updateBatteryVoltage();
-std::string createMessage(const std::string &text, int32_t value);
-uint8_t getRandomNumber();
-
-std::string createMessage(const std::string &text, int32_t value)
-{
-  return "\r\n" + text + std::to_string(value);
-}
+#include "Utils.h"            // Include the new utils header
 
 void setup()
 {
@@ -75,32 +61,8 @@ void loop()
   // Handle battery voltage and LED calibration indication
   if (currentT - previousT_2 >= 2000)
   {
-    updateBatteryVoltage();
+    UTILS::updateBatteryVoltage();
     StateManager::handleCalibrationIndication();
     previousT_2 = currentT;
-  }
-}
-
-// Function to return a random number between 0 and 255
-uint8_t getRandomNumber()
-{
-  return random(0, 256); // Upper bound is exclusive, so use 256 to include 255
-}
-
-void updateBatteryVoltage()
-{
-  battVoltage((double)analogRead(VBAT) / 204); // value 204 must be selected by measuring battery voltage!
-}
-
-void battVoltage(double voltage)
-{
-  if (voltage > 8 && voltage <= 9.5)
-  {
-    digitalWrite(BUZZER, HIGH);
-    BLEHandler::sendData("\r\n Battery voltage is low.");
-  }
-  else
-  {
-    digitalWrite(BUZZER, LOW);
   }
 }
