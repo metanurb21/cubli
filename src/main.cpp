@@ -22,6 +22,12 @@
 #include <DabbleESP32.h>
 
 void print_gyro_data();
+float calculateOrientation()
+{
+  Dabble.processInput();
+  float heading = Sensor.getAccelerometerYaxis();
+  return heading;
+}
 
 void setup()
 {

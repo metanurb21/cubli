@@ -40,7 +40,7 @@ float eK3 = 2.5;
 float eK4 = 0.014;
 int motor_speed_x_divisor = 5;
 int motor_speed_y_divisor = 5;
-int rotate_speed = 100; // 255 max
+int rotate_speed = 150; // 255 max
 
 // Calibration and state variables
 bool calibrated = false;
