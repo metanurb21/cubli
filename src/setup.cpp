@@ -40,7 +40,7 @@ float eK3 = 2.5;
 float eK4 = 0.014;
 int motor_speed_x_divisor = 5;
 int motor_speed_y_divisor = 5;
-int rotate_speed = 150; // 255 max
+int rotate_speed = 100; // 255 max
 
 // Calibration and state variables
 bool calibrated = false;
@@ -76,10 +76,17 @@ int32_t GyX_offset_sum = 0;
 int32_t GyY_offset_sum = 0;
 int32_t GyZ_offset_sum = 0;
 
+//
+bool init_spin_CW;
+bool init_spin_CCW;
+float device_heading = 0;
+bool slow_down_finished = false;
+
 // Timing variables
 long currentT = 0;
 long previousT_1 = 0;
 long previousT_2 = 0;
+long previousT_3 = 0;
 int loop_time = 10;
 long spin_hold_time = 0;
 long current_spin_hold_time = 0;

@@ -93,6 +93,7 @@ extern bool calibrated_leds;
 extern bool off_mode;
 extern bool init_spin;
 extern bool slow_down;
+extern bool slow_down_finished;
 extern bool toggle_init_spin;
 extern int motor_init_spin;
 extern int motor_init_spin_delay;
@@ -114,6 +115,7 @@ extern int32_t GyZ_offset_sum;
 extern long currentT;
 extern long previousT_1;
 extern long previousT_2;
+extern long previousT_3;
 extern int loop_time;
 extern long spin_hold_time;
 extern long current_spin_hold_time;
@@ -129,6 +131,10 @@ extern bool vertical_edge;
 extern bool vertex_calibrated;
 extern bool ledState;
 extern bool ledStateSwitch;
+
+extern bool init_spin_CW;
+extern bool init_spin_CCW;
+extern float device_heading;
 
 // Offset structure
 struct Offsets

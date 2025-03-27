@@ -15,11 +15,20 @@
 #include "StateManager.h"     // Include the new state management header
 #include "AngleCalibration.h" // Include the new angle and calibration header
 #include "Utils.h"            // Include the new utils header
+// Dabble experimrntal
+#define CUSTOM_SETTINGS
+#define INCLUDE_SENSOR_MODULE
+// #define INCLUDE_TERMINAL_MODULE
+#include <DabbleESP32.h>
+
+void print_gyro_data();
 
 void setup()
 {
   Serial.begin(115200);
-  BLEHandler::initBLE(DEVICE_NAME, SERVICE_UUID, CHAR_UUID);
+  // BLEHandler::initBLE(DEVICE_NAME, SERVICE_UUID, CHAR_UUID);
+
+  Dabble.begin("Hello From Balancing Cube");
 
   EEPROM.begin(EEPROM_SIZE);
 
@@ -41,9 +50,8 @@ void setup()
   }
   delay(500);
   LEDControl::clearLEDs();
-
   AngleCalibration::initializeCalibration(); // Initialize angle and calibration
-  BLEHandler::sendData("Hello from Balancing Cube");
+  // BLEHandler::sendData("Hello from Balancing Cube");
 }
 
 void loop()
@@ -64,5 +72,48 @@ void loop()
     UTILS::updateBatteryVoltage();
     StateManager::handleCalibrationIndication();
     previousT_2 = currentT;
+  }
+
+  // handle gyro data for spinning from iPhone
+  if (currentT - previousT_3 >= 1000)
+  {
+    print_gyro_data();
+    previousT_3 = currentT;
+  }
+}
+
+void print_gyro_data()
+{
+  device_heading = calculateOrientation();
+  if (device_heading > 2)
+  {
+    if (device_heading > 3)
+    {
+      init_spin_CCW = true;
+      init_spin_CW = false;
+    }
+    init_spin = true;
+  }
+  else if (device_heading < -2)
+  {
+    if (device_heading < -3)
+    {
+      init_spin_CW = true;
+      init_spin_CCW = false;
+    }
+    init_spin = true;
+  }
+  else
+  {
+    init_spin = false;
+    init_spin_CW = false;
+    init_spin_CCW = false;
+    if (slow_down_finished)
+    {
+      spin_hold_time = millis() + 5000;
+      toggle_init_spin = true;
+      previous_spin_hold_time = 0;
+      motor_init_spin = 0;
+    }
   }
 }
