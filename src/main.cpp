@@ -111,12 +111,11 @@ void print_gyro_data()
   }
   else
   {
-    init_spin = false;
-    init_spin_CW = false;
-    init_spin_CCW = false;
+
     if (slow_down_finished)
     {
-      spin_hold_time = millis() + 5000;
+      init_spin = false;
+      slow_down_finished = false;
       toggle_init_spin = true;
       previous_spin_hold_time = 0;
       motor_init_spin = 0;

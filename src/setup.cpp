@@ -91,6 +91,7 @@ int loop_time = 10;
 long spin_hold_time = 0;
 long current_spin_hold_time = 0;
 long previous_spin_hold_time = 0;
+bool motor_direction = false;
 
 // Buzzer and tone variables
 int octave = 1;

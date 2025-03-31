@@ -135,6 +135,7 @@ extern bool ledStateSwitch;
 extern bool init_spin_CW;
 extern bool init_spin_CCW;
 extern float device_heading;
+extern bool motor_direction;
 
 // Offset structure
 struct Offsets

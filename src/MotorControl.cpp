@@ -44,12 +44,13 @@ namespace MotorControl
 
 	void Motor_control(int motor_number, int sp, int motor_speed, uint8_t dir_pin, uint8_t pwm_channel)
 	{
-		if (motor_number == 2 && init_spin)
+		if (motor_number == 3 && init_spin)
 		{
 			if (motor_init_spin < rotate_speed)
 			{
 				toggle_init_spin ? motor_init_spin++ : motor_init_spin = motor_init_spin;
 				toggle_init_spin = !toggle_init_spin;
+				spin_hold_time = millis() + 3000;
 			}
 			else
 			{
@@ -65,15 +66,11 @@ namespace MotorControl
 			}
 			if (init_spin_CW)
 			{
-				sp = sp + (motor_speed - motor_init_spin);
+				sp = sp + (motor_speed - abs(motor_init_spin));
 			}
 			else if (init_spin_CCW)
 			{
-				sp = sp + (motor_speed + motor_init_spin);
-			}
-			else
-			{
-				sp = sp + motor_speed;
+				sp = sp + (motor_speed + abs(motor_init_spin));
 			}
 		}
 		else
@@ -160,10 +157,12 @@ namespace MotorControl
 		if (state == 0x02 || state == 0x0d || state == 0x04 || state == 0x0b)
 		{
 			enc_count3++;
+			motor_direction = true;
 		}
 		else if (state == 0x01 || state == 0x0e || state == 0x08 || state == 0x07)
 		{
 			enc_count3--;
+			motor_direction = false;
 		}
 	}
 }
