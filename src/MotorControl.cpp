@@ -44,24 +44,38 @@ namespace MotorControl
 
 	void Motor_control(int motor_number, int sp, int motor_speed, uint8_t dir_pin, uint8_t pwm_channel)
 	{
-		if (motor_number == 3 && init_spin)
+		if (motor_number == 3)
 		{
-			if (motor_init_spin < rotate_speed)
+			if (init_spin)
 			{
-				toggle_init_spin ? motor_init_spin++ : motor_init_spin = motor_init_spin;
-				toggle_init_spin = !toggle_init_spin;
-				spin_hold_time = millis() + 3000;
-			}
-			else
-			{
-				current_spin_hold_time = millis();
-				if (current_spin_hold_time < spin_hold_time)
+				if (motor_init_spin < rotate_speed)
 				{
-					previous_spin_hold_time = current_spin_hold_time;
+					toggle_init_spin ? motor_init_spin++ : motor_init_spin = motor_init_spin;
+					toggle_init_spin = !toggle_init_spin;
+					spin_hold_time = millis() + 20000;
 				}
 				else
 				{
-					slow_down_finished = true;
+					current_spin_hold_time = millis();
+					if (current_spin_hold_time < spin_hold_time)
+					{
+						previous_spin_hold_time = current_spin_hold_time;
+					}
+					else
+					{
+						slow_down_finished = true;
+					}
+				}
+			}
+			if (slow_down_finished)
+			{
+				if (motor_init_spin > 0)
+				{
+					motor_init_spin--;
+				}
+				else if (motor_init_spin < 0)
+				{
+					motor_init_spin++;
 				}
 			}
 			if (init_spin_CW)
@@ -72,12 +86,16 @@ namespace MotorControl
 			{
 				sp = sp + (motor_speed + abs(motor_init_spin));
 			}
+			else
+			{
+				sp = sp + motor_speed + motor_init_spin;
+			}
 		}
 		else
 		{
 			sp = sp + motor_speed;
 		}
-
+		sp = sp + motor_speed;
 		if (sp < 0)
 			digitalWrite(dir_pin, LOW);
 		else

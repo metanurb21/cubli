@@ -84,22 +84,35 @@ namespace BLEHandler
 						delay(300);
 					}
 				}
-				if (command.equals("9"))
+				if (command.equals("l"))
 				{
 					motor_init_spin = 0;
 					init_spin = true;
-					spin_hold_time = millis() + 100000;
-					sendData("\r\n Speed Increase");
+					init_spin_CCW = true;
+					init_spin_CW = false;
+					did_init = false;
+					slow_down_finished = false;
 				}
-				if (command.equals("0"))
+				if (command.equals("r"))
 				{
-					init_spin = false;
-					slow_down = false;
-					toggle_init_spin = true;
+					motor_init_spin = 0;
+					init_spin = true;
+					init_spin_CCW = false;
+					init_spin_CW = true;
+					did_init = false;
+					slow_down_finished = false;
 				}
 				if (command.equals("s"))
 				{
-					sendData(UTILS::createMessage("motors_speed_X: ", motors_speed_X).c_str());
+					motor_init_spin = 0;
+					init_spin = false;
+					init_spin_CCW = false;
+					init_spin_CW = false;
+					slow_down_finished = true;
+				}
+				if (command.equals("b"))
+				{
+					sendData(UTILS::getBatVoltage("Battery Voltage: ", batteryVoltage).c_str());
 				}
 			}
 		}

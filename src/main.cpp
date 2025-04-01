@@ -15,26 +15,28 @@
 #include "StateManager.h"     // Include the new state management header
 #include "AngleCalibration.h" // Include the new angle and calibration header
 #include "Utils.h"            // Include the new utils header
-// Dabble experimrntal
-#define CUSTOM_SETTINGS
-#define INCLUDE_SENSOR_MODULE
-// #define INCLUDE_TERMINAL_MODULE
-#include <DabbleESP32.h>
+// // Dabble experimrntal
+// #define CUSTOM_SETTINGS
+// #define INCLUDE_SENSOR_MODULE
+// // #define INCLUDE_TERMINAL_MODULE
+// #include <DabbleESP32.h>
 
-void print_gyro_data();
-float calculateOrientation()
-{
-  Dabble.processInput();
-  float heading = Sensor.getAccelerometerYaxis();
-  return heading;
-}
+// void print_gyro_data();
+// float calculateOrientation()
+// {
+//   Dabble.processInput();
+//   float heading = Sensor.getAccelerometerYaxis();
+//   return heading;
+// }
+
+void resetSpin();
 
 void setup()
 {
   Serial.begin(115200);
-  // BLEHandler::initBLE(DEVICE_NAME, SERVICE_UUID, CHAR_UUID);
+  BLEHandler::initBLE(DEVICE_NAME, SERVICE_UUID, CHAR_UUID);
 
-  Dabble.begin("Hello From Balancing Cube");
+  // Dabble.begin("Hello From Balancing Cube");
 
   EEPROM.begin(EEPROM_SIZE);
 
@@ -57,7 +59,7 @@ void setup()
   delay(500);
   LEDControl::clearLEDs();
   AngleCalibration::initializeCalibration(); // Initialize angle and calibration
-  // BLEHandler::sendData("Hello from Balancing Cube");
+  BLEHandler::sendData("Hello from Balancing Cube");
 }
 
 void loop()
@@ -83,42 +85,53 @@ void loop()
   // handle gyro data for spinning from iPhone
   if (currentT - previousT_3 >= 1000)
   {
-    print_gyro_data();
+    // print_gyro_data();
+    resetSpin();
     previousT_3 = currentT;
   }
 }
 
-void print_gyro_data()
+void resetSpin()
 {
-  device_heading = calculateOrientation();
-  if (device_heading > 2)
+  if (slow_down_finished)
   {
-    if (device_heading > 3)
-    {
-      init_spin_CCW = true;
-      init_spin_CW = false;
-    }
-    init_spin = true;
-  }
-  else if (device_heading < -2)
-  {
-    if (device_heading < -3)
-    {
-      init_spin_CW = true;
-      init_spin_CCW = false;
-    }
-    init_spin = true;
-  }
-  else
-  {
-
-    if (slow_down_finished)
-    {
-      init_spin = false;
-      slow_down_finished = false;
-      toggle_init_spin = true;
-      previous_spin_hold_time = 0;
-      motor_init_spin = 0;
-    }
+    init_spin = false;
+    toggle_init_spin = true;
+    previous_spin_hold_time = 0;
   }
 }
+
+// void print_gyro_data()
+// {
+//   device_heading = calculateOrientation();
+//   if (device_heading > 2)
+//   {
+//     if (device_heading > 3)
+//     {
+//       init_spin_CCW = true;
+//       init_spin_CW = false;
+//     }
+//     init_spin = true;
+//   }
+//   else if (device_heading < -2)
+//   {
+//     if (device_heading < -3)
+//     {
+//       init_spin_CW = true;
+//       init_spin_CCW = false;
+//     }
+//     init_spin = true;
+//   }
+//   else
+//   {
+
+//     if (slow_down_finished)
+//     {
+//       init_spin = false;
+//       slow_down_finished = false;
+//       toggle_init_spin = true;
+//       previous_spin_hold_time = 0;
+//       motor_init_spin = 0;
+//     }
+//   }
+// }

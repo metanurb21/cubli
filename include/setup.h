@@ -136,6 +136,9 @@ extern bool init_spin_CW;
 extern bool init_spin_CCW;
 extern float device_heading;
 extern bool motor_direction;
+extern float batteryVoltage;
+extern int motor_speed_previous;
+extern bool did_init;
 
 // Offset structure
 struct Offsets
