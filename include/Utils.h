@@ -9,7 +9,7 @@ namespace UTILS
 	void battVoltage(float voltage);
 	void updateBatteryVoltage();
 	std::string createMessage(const std::string &text, int32_t value);
-	std::string getBatVoltage(const std::string &text, float value);
+	std::string getBatVoltage();
 	uint8_t getRandomNumber();
 }
 #endif // UTILS_H

@@ -56,10 +56,12 @@ void setup()
     tone(BUZZER, 2186 + (i * 100), 100, channel);
     delay(80);
   }
+  UTILS::updateBatteryVoltage();
   delay(500);
   LEDControl::clearLEDs();
   AngleCalibration::initializeCalibration(); // Initialize angle and calibration
   BLEHandler::sendData("Hello from Balancing Cube");
+  BLEHandler::sendData(UTILS::getBatVoltage());
 }
 
 void loop()

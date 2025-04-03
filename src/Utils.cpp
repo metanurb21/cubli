@@ -21,7 +21,6 @@ namespace UTILS
 		// Formula: Vout = (ADC / 4095.0) * Vref * ((R1 + R2) / R2)
 		// Vref = 3.3V, R1 = 33k, R2 = 10k
 		batteryVoltage = (rawADC / 4095.0) * 3.3 * ((33000.0 + 10000.0) / 10000.0);
-
 		// Pass the calculated voltage to battVoltage function
 		battVoltage(batteryVoltage);
 	}
@@ -38,8 +37,10 @@ namespace UTILS
 	{
 		return "\r\n" + text + std::to_string(value);
 	}
-	std::string getBatVoltage(const std::string &text, float value)
+	std::string getBatVoltage()
 	{
-		return "\r\n" + text + std::to_string(value) + "V";
+		String volt = String(batteryVoltage, 2);
+		std::string message = "\r\nBattery Voltage: " + std::string(volt.c_str()) + "V";
+		return message;
 	}
 }

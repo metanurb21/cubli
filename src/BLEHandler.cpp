@@ -112,7 +112,7 @@ namespace BLEHandler
 				}
 				if (command.equals("b"))
 				{
-					sendData(UTILS::getBatVoltage("Battery Voltage: ", batteryVoltage).c_str());
+					sendData(UTILS::getBatVoltage());
 				}
 			}
 		}

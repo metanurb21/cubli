@@ -14,11 +14,13 @@ namespace AngleCalibration
 {
 	void initializeCalibration()
 	{
+		Serial.println("initializeCalibration");
 		angleSetup();
 	}
 
 	void angleSetup()
 	{
+		Serial.println("angleSetup");
 		Wire.begin();
 		delay(100);
 		writeTo(MPU6050, PWR_MGMT_1, 0);
@@ -30,6 +32,7 @@ namespace AngleCalibration
 
 	void calibrateGyro()
 	{
+		Serial.println("calibrateGyro");
 		for (int i = 0; i < 512; i++)
 		{
 			angleCalc();
