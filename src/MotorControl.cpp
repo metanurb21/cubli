@@ -1,6 +1,7 @@
 #include "MotorControl.h"
 #include "AngleCalibration.h"
 #include "setup.h"
+#include "LEDControl.h"
 
 // Define motor-related variables here if needed
 // extern declarations for shared variables can be added if required
@@ -50,8 +51,14 @@ namespace MotorControl
 			{
 				if (motor_init_spin < rotate_speed)
 				{
-					toggle_init_spin ? motor_init_spin++ : motor_init_spin = motor_init_spin;
-					toggle_init_spin = !toggle_init_spin;
+					motor_speed_previous++;
+					if (motor_speed_previous % 2 == 0)
+					{
+						toggle_init_spin
+							? motor_init_spin++
+							: motor_init_spin = motor_init_spin;
+						toggle_init_spin = !toggle_init_spin;
+					}
 					spin_hold_time = millis() + 20000;
 				}
 				else
@@ -64,6 +71,7 @@ namespace MotorControl
 					else
 					{
 						slow_down_finished = true;
+						LEDControl::setLEDColor(5, CRGB::Green);
 					}
 				}
 			}
@@ -76,6 +84,24 @@ namespace MotorControl
 				else if (motor_init_spin < 0)
 				{
 					motor_init_spin++;
+				}
+				if (motor_init_spin == 0)
+				{
+					if (!turn_off_leds)
+					{
+						LEDControl::setLEDColor(6, CRGB::Red);
+						turn_off_leds = true;
+						spin_hold_time = millis() + 2000;
+					}
+					current_spin_hold_time = millis();
+					if (current_spin_hold_time < spin_hold_time)
+					{
+						previous_spin_hold_time = current_spin_hold_time;
+					}
+					else
+					{
+						LEDControl::clearLEDs();
+					}
 				}
 			}
 			if (init_spin_CW)

@@ -139,7 +139,7 @@ extern bool motor_direction;
 extern float batteryVoltage;
 extern int motor_speed_previous;
 extern bool did_init;
-
+extern bool turn_off_leds;
 // Offset structure
 struct Offsets
 {

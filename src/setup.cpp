@@ -40,7 +40,7 @@ float eK3 = 2.5;
 float eK4 = 0.014;
 int motor_speed_x_divisor = 5;
 int motor_speed_y_divisor = 5;
-int rotate_speed = 150; // 255 max
+int rotate_speed = 180; // 255 max
 
 // Calibration and state variables
 bool calibrated = false;
@@ -95,6 +95,7 @@ long previous_spin_hold_time = 0;
 bool motor_direction = false;
 float batteryVoltage = 0;
 int motor_speed_previous = 0;
+bool turn_off_leds = false;
 
 // Buzzer and tone variables
 int octave = 1;
