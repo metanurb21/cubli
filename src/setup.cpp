@@ -58,7 +58,7 @@ bool vertical_edge = false;
 bool vertex_calibrated = false;
 bool ledState = false;
 bool ledStateSwitch = false;
-bool did_init = false;
+bool oscilate = false;
 
 // Accelerometer and gyroscope data
 int16_t AcX = 0;
@@ -96,6 +96,7 @@ bool motor_direction = false;
 float batteryVoltage = 0;
 int motor_speed_previous = 0;
 bool turn_off_leds = false;
+long end_hold_time = 0;
 
 // Buzzer and tone variables
 int octave = 1;

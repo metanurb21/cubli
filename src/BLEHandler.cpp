@@ -92,7 +92,6 @@ namespace BLEHandler
 					init_spin = true;
 					init_spin_CCW = true;
 					init_spin_CW = false;
-					did_init = true;
 					slow_down_finished = false;
 					motor_speed_previous = 0;
 					turn_off_leds = false;
@@ -104,7 +103,6 @@ namespace BLEHandler
 					init_spin = true;
 					init_spin_CCW = false;
 					init_spin_CW = true;
-					did_init = true;
 					slow_down_finished = false;
 					motor_speed_previous = 0;
 					turn_off_leds = false;
@@ -117,6 +115,19 @@ namespace BLEHandler
 					init_spin_CW = false;
 					slow_down_finished = true;
 					motor_speed_previous = 0;
+					oscilate = false;
+				}
+				if (command.equals("a"))
+				{
+					oscilate = !oscilate;
+					LEDControl::clearLEDs();
+					motor_init_spin = 0;
+					init_spin = true;
+					init_spin_CCW = false;
+					init_spin_CW = true;
+					slow_down_finished = false;
+					motor_speed_previous = 0;
+					turn_off_leds = false;
 				}
 				if (command.equals("b"))
 				{

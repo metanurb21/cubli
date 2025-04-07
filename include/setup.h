@@ -120,6 +120,7 @@ extern int loop_time;
 extern long spin_hold_time;
 extern long current_spin_hold_time;
 extern long previous_spin_hold_time;
+extern long end_hold_time;
 extern int channel;
 extern int freq;
 extern int dure;
@@ -138,8 +139,8 @@ extern float device_heading;
 extern bool motor_direction;
 extern float batteryVoltage;
 extern int motor_speed_previous;
-extern bool did_init;
 extern bool turn_off_leds;
+extern bool oscilate;
 // Offset structure
 struct Offsets
 {

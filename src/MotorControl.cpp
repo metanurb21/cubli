@@ -59,7 +59,7 @@ namespace MotorControl
 							: motor_init_spin = motor_init_spin;
 						toggle_init_spin = !toggle_init_spin;
 					}
-					spin_hold_time = millis() + 20000;
+					spin_hold_time = millis() + 45000; // Approx 1 revolution
 				}
 				else
 				{
@@ -67,6 +67,7 @@ namespace MotorControl
 					if (current_spin_hold_time < spin_hold_time)
 					{
 						previous_spin_hold_time = current_spin_hold_time;
+						end_hold_time = millis() + 2000;
 					}
 					else
 					{
@@ -91,7 +92,7 @@ namespace MotorControl
 					{
 						LEDControl::setLEDColor(6, CRGB::Red);
 						turn_off_leds = true;
-						spin_hold_time = millis() + 2000;
+						spin_hold_time = millis() + 8000;
 					}
 					current_spin_hold_time = millis();
 					if (current_spin_hold_time < spin_hold_time)
@@ -101,6 +102,23 @@ namespace MotorControl
 					else
 					{
 						LEDControl::clearLEDs();
+						if (oscilate)
+						{
+							if (init_spin_CW)
+							{
+								init_spin_CW = false;
+								init_spin_CCW = true;
+							}
+							else
+							{
+								init_spin_CW = true;
+								init_spin_CCW = false;
+							}
+							init_spin = true;
+							slow_down_finished = false;
+							motor_speed_previous = 0;
+							turn_off_leds = false;
+						}
 					}
 				}
 			}
