@@ -126,6 +126,8 @@ extern int freq;
 extern int dure;
 extern float radToDeg;
 extern int rotate_speed;
+extern unsigned long lastIncrementTime;
+extern unsigned long incrementInterval;
 
 extern bool vertical_vertex;
 extern bool vertical_edge;

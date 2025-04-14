@@ -47,106 +47,122 @@ namespace MotorControl
 	{
 		if (motor_number == 3)
 		{
-			if (init_spin)
+			handleMotor3Control(sp, motor_speed);
+		}
+		else
+		{
+			sp += motor_speed;
+		}
+
+		setMotorDirectionAndSpeed(sp, dir_pin, pwm_channel);
+	}
+
+	void handleMotor3Control(int &sp, int motor_speed)
+	{
+		if (init_spin)
+		{
+			handleInitSpin();
+		}
+
+		if (slow_down_finished)
+		{
+			handleSlowDown();
+		}
+
+		adjustSpeedForSpinDirection(sp, motor_speed);
+	}
+
+	void updateMotorInitSpin()
+	{
+		if (millis() - lastIncrementTime >= incrementInterval)
+		{
+			motor_init_spin++;
+			lastIncrementTime = millis();
+		}
+	}
+
+	void handleInitSpin()
+	{
+		if (motor_init_spin < rotate_speed)
+		{
+			updateMotorInitSpin();
+			spin_hold_time = millis() + 45000; // Approx 1 revolution
+		}
+		else
+		{
+			if (millis() < spin_hold_time)
 			{
-				if (motor_init_spin < rotate_speed)
-				{
-					motor_speed_previous++;
-					if (motor_speed_previous % 2 == 0)
-					{
-						toggle_init_spin
-							? motor_init_spin++
-							: motor_init_spin = motor_init_spin;
-						toggle_init_spin = !toggle_init_spin;
-					}
-					spin_hold_time = millis() + 45000; // Approx 1 revolution
-				}
-				else
-				{
-					current_spin_hold_time = millis();
-					if (current_spin_hold_time < spin_hold_time)
-					{
-						previous_spin_hold_time = current_spin_hold_time;
-						end_hold_time = millis() + 2000;
-					}
-					else
-					{
-						slow_down_finished = true;
-						LEDControl::setLEDColor(5, CRGB::Green);
-					}
-				}
-			}
-			if (slow_down_finished)
-			{
-				if (motor_init_spin > 0)
-				{
-					motor_init_spin--;
-				}
-				else if (motor_init_spin < 0)
-				{
-					motor_init_spin++;
-				}
-				if (motor_init_spin == 0)
-				{
-					if (!turn_off_leds)
-					{
-						LEDControl::setLEDColor(6, CRGB::Red);
-						turn_off_leds = true;
-						spin_hold_time = millis() + 8000;
-					}
-					current_spin_hold_time = millis();
-					if (current_spin_hold_time < spin_hold_time)
-					{
-						previous_spin_hold_time = current_spin_hold_time;
-					}
-					else
-					{
-						LEDControl::clearLEDs();
-						if (oscilate)
-						{
-							if (init_spin_CW)
-							{
-								init_spin_CW = false;
-								init_spin_CCW = true;
-							}
-							else
-							{
-								init_spin_CW = true;
-								init_spin_CCW = false;
-							}
-							init_spin = true;
-							slow_down_finished = false;
-							motor_speed_previous = 0;
-							turn_off_leds = false;
-						}
-					}
-				}
-			}
-			if (init_spin_CW)
-			{
-				sp = sp + (motor_speed - abs(motor_init_spin));
-			}
-			else if (init_spin_CCW)
-			{
-				sp = sp + (motor_speed + abs(motor_init_spin));
+				previous_spin_hold_time = millis();
+				end_hold_time = millis() + 2000;
 			}
 			else
 			{
-				sp = sp + motor_speed + motor_init_spin;
+				slow_down_finished = true;
+				LEDControl::setLEDColor(5, CRGB::Green);
 			}
 		}
-		else
+	}
+
+	void handleSlowDown()
+	{
+		if (motor_init_spin > 0)
 		{
-			sp = sp + motor_speed;
+			motor_init_spin--;
 		}
-		sp = sp + motor_speed;
-		if (sp < 0)
-			digitalWrite(dir_pin, LOW);
-		else
+		else if (motor_init_spin < 0)
 		{
-			digitalWrite(dir_pin, HIGH);
+			motor_init_spin++;
 		}
 
+		if (motor_init_spin == 0)
+		{
+			handleSpinCompletion();
+		}
+	}
+
+	void handleSpinCompletion()
+	{
+		if (!turn_off_leds)
+		{
+			LEDControl::setLEDColor(6, CRGB::Red);
+			turn_off_leds = true;
+			spin_hold_time = millis() + 8000;
+		}
+
+		if (millis() >= spin_hold_time)
+		{
+			LEDControl::clearLEDs();
+			if (oscilate)
+			{
+				init_spin_CW = !init_spin_CW;
+				init_spin_CCW = !init_spin_CCW;
+				init_spin = true;
+				slow_down_finished = false;
+				motor_speed_previous = 0;
+				turn_off_leds = false;
+			}
+		}
+	}
+
+	void adjustSpeedForSpinDirection(int &sp, int motor_speed)
+	{
+		if (init_spin_CW)
+		{
+			sp += motor_speed - abs(motor_init_spin);
+		}
+		else if (init_spin_CCW)
+		{
+			sp += motor_speed + abs(motor_init_spin);
+		}
+		else
+		{
+			sp += motor_speed + motor_init_spin;
+		}
+	}
+
+	void setMotorDirectionAndSpeed(int sp, uint8_t dir_pin, uint8_t pwm_channel)
+	{
+		digitalWrite(dir_pin, sp < 0 ? LOW : HIGH);
 		pwmSet(pwm_channel, 255 - abs(sp));
 	}
 

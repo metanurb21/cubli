@@ -14,6 +14,13 @@ namespace MotorControl
 	void IRAM_ATTR ENC1_READ();
 	void IRAM_ATTR ENC2_READ();
 	void IRAM_ATTR ENC3_READ();
+	void updateMotorInitSpin();
+	void handleMotor3Control(int &sp, int motor_speed);
+	void handleInitSpin();
+	void handleSlowDown();
+	void handleSpinCompletion();
+	void adjustSpeedForSpinDirection(int &sp, int motor_speed);
+	void setMotorDirectionAndSpeed(int sp, uint8_t dir_pin, uint8_t pwm_channel);
 }
 
 #endif // MOTOR_CONTROL_H
