@@ -97,8 +97,6 @@ float batteryVoltage = 0;
 int motor_speed_previous = 0;
 bool turn_off_leds = false;
 long end_hold_time = 0;
-unsigned long lastIncrementTime = 0;
-unsigned long incrementInterval = 100;
 
 // Buzzer and tone variables
 int octave = 1;
