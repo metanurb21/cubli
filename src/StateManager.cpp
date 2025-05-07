@@ -128,6 +128,7 @@ namespace StateManager
 				toggle_init_spin = true;
 				motor_init_spin = 0;
 				previous_spin_hold_time = 0;
+				should_fade_led = true;
 			}
 
 			if (abs(AcX) < 2000 && abs(Acc_angleX) < 0.4 && abs(Acc_angleY) < 0.4)
@@ -135,7 +136,9 @@ namespace StateManager
 				robot_angleX = Acc_angleX;
 				robot_angleY = Acc_angleY;
 				currentState = VERTICAL_VERTEX;
-				LEDControl::setLEDColor(4, CRGB::Blue);
+				// LEDControl::setLEDColor(4, CRGB::Blue);
+				should_fade_led = false;
+				LEDControl::setAllLEDs(CRGB::Blue, false, 1000);
 				tone(BUZZER, 2186, 100, channel);
 				off_mode = true;
 			}
@@ -144,7 +147,8 @@ namespace StateManager
 				robot_angleX = Acc_angleX;
 				robot_angleY = Acc_angleY;
 				currentState = VERTICAL_EDGE;
-				LEDControl::setLEDColor(4, CRGB::Yellow);
+				should_fade_led = false;
+				LEDControl::setAllLEDs(CRGB::HotPink, false, 1000);
 				tone(BUZZER, 2186, 100, channel);
 				off_mode = true;
 			}

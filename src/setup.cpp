@@ -92,13 +92,17 @@ int loop_time = 10;
 long spin_hold_time = 0;
 long current_spin_hold_time = 0;
 long previous_spin_hold_time = 0;
-bool motor_direction = false;
 float batteryVoltage = 0;
 int motor_speed_previous = 0;
 bool turn_off_leds = false;
 long end_hold_time = 0;
 unsigned long lastIncrementTime = 0;
 unsigned long incrementInterval = 100;
+unsigned long incrementSlowdownInterval = 100;
+int FastLED_fade_counter = 0;
+unsigned long lastIncrementLEDTime = 0;
+bool fade_led_toggle = true;
+bool should_fade_led = false;
 
 // Buzzer and tone variables
 int octave = 1;

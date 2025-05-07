@@ -88,6 +88,7 @@ namespace BLEHandler
 				if (command.equals("l"))
 				{
 					LEDControl::clearLEDs();
+					LEDControl::setAllLEDs(CRGB::Blue, true, 1000);
 					motor_init_spin = 0;
 					init_spin = true;
 					init_spin_CCW = true;
@@ -99,6 +100,7 @@ namespace BLEHandler
 				if (command.equals("r"))
 				{
 					LEDControl::clearLEDs();
+					LEDControl::setAllLEDs(CRGB::Red, true, 1000);
 					motor_init_spin = 0;
 					init_spin = true;
 					init_spin_CCW = false;

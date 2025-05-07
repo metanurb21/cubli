@@ -91,6 +91,11 @@ void loop()
     resetSpin();
     previousT_3 = currentT;
   }
+
+  if (should_fade_led)
+  {
+    LEDControl::fadeLEDs(CRGB::DeepPink);
+  }
 }
 
 void resetSpin()

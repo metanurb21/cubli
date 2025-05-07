@@ -81,12 +81,28 @@ namespace MotorControl
 		}
 	}
 
+	void updateMotorSlowdownSpin()
+	{
+		if (millis() - lastIncrementTime >= incrementSlowdownInterval)
+		{
+			if (motor_init_spin > 0)
+			{
+				motor_init_spin--;
+			}
+			else if (motor_init_spin < 0)
+			{
+				motor_init_spin++;
+			}
+			lastIncrementTime = millis();
+		}
+	}
+
 	void handleInitSpin()
 	{
 		if (motor_init_spin < rotate_speed)
 		{
 			updateMotorInitSpin();
-			spin_hold_time = millis() + 45000; // Approx 1 revolution
+			spin_hold_time = millis() + 50000; // Approx 1 revolution
 		}
 		else
 		{
@@ -98,21 +114,15 @@ namespace MotorControl
 			else
 			{
 				slow_down_finished = true;
-				LEDControl::setLEDColor(5, CRGB::Green);
+				// LEDControl::setLEDColor(5, CRGB::Green);
+				LEDControl::setAllLEDs(CRGB::Green, false, 1000);
 			}
 		}
 	}
 
 	void handleSlowDown()
 	{
-		if (motor_init_spin > 0)
-		{
-			motor_init_spin--;
-		}
-		else if (motor_init_spin < 0)
-		{
-			motor_init_spin++;
-		}
+		updateMotorSlowdownSpin();
 
 		if (motor_init_spin == 0)
 		{
@@ -124,14 +134,16 @@ namespace MotorControl
 	{
 		if (!turn_off_leds)
 		{
-			LEDControl::setLEDColor(6, CRGB::Red);
+			// LEDControl::setLEDColor(6, CRGB::Red);
+			LEDControl::setAllLEDs(CRGB::Red, false, 1000);
 			turn_off_leds = true;
 			spin_hold_time = millis() + 8000;
 		}
 
 		if (millis() >= spin_hold_time)
 		{
-			LEDControl::clearLEDs();
+			// LEDControl::clearLEDs();
+			LEDControl::setAllLEDs(CRGB::Blue, false, 1000);
 			if (oscilate)
 			{
 				init_spin_CW = !init_spin_CW;
@@ -235,12 +247,10 @@ namespace MotorControl
 		if (state == 0x02 || state == 0x0d || state == 0x04 || state == 0x0b)
 		{
 			enc_count3++;
-			motor_direction = true;
 		}
 		else if (state == 0x01 || state == 0x0e || state == 0x08 || state == 0x07)
 		{
 			enc_count3--;
-			motor_direction = false;
 		}
 	}
 }

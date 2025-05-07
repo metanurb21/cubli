@@ -24,17 +24,60 @@ namespace LEDControl
 
 	void setAllLEDs(CRGB color, bool delay, uint32_t duration)
 	{
-		for (int i = 0; i < NUM_LEDS; i++)
-		{
-			leds[i] = color;
-			FastLED.delay(80);
-		}
-
+		// for (int i = 0; i < NUM_LEDS; i++)
+		// {
+		leds[0] = color;
 		FastLED.show();
 		if (delay)
 		{
-			FastLED.delay(duration);
-			clearLEDs();
+			FastLED.delay(80);
+		}
+		// }
+
+		// if (delay)
+		// {
+		// 	FastLED.delay(duration);
+		// 	clearLEDs();
+		// }
+	}
+
+	void fadeLEDs(CRGB color)
+	{
+		if (fade_led_toggle)
+		{
+			if (millis() - lastIncrementLEDTime >= 5)
+			{
+
+				leds[0] = color;
+				// leds[0].maximizeBrightness(FastLED_fade_counter);
+				leds[0].fadeToBlackBy(255 - FastLED_fade_counter);
+
+				FastLED.show();
+				FastLED_fade_counter++;
+				lastIncrementLEDTime = millis();
+				if (FastLED_fade_counter >= 255)
+				{
+					fade_led_toggle = false;
+				}
+			}
+		}
+		else
+		{
+			if (millis() - lastIncrementLEDTime >= 5)
+			{
+
+				leds[0] = color;
+				/// leds[0].maximizeBrightness(FastLED_fade_counter);
+				leds[0].fadeLightBy(255 - FastLED_fade_counter);
+
+				FastLED.show();
+				FastLED_fade_counter--;
+				lastIncrementLEDTime = millis();
+				if (FastLED_fade_counter <= 0)
+				{
+					fade_led_toggle = true;
+				}
+			}
 		}
 	}
 

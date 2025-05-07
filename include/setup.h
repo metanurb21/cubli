@@ -6,14 +6,14 @@
 #include <stdint.h>
 
 #define BUZZER 27
-#define VBAT 34
+#define VBAT 34 // 25
 #define INT_LED 2
 #define BRAKE 26
 
 #define DIR2 15
 #define ENC2_1 13
 #define ENC2_2 14
-#define PWM2 25
+#define PWM2 25 // 12
 #define PWM2_CH 0
 
 #define DIR3 5
@@ -128,6 +128,11 @@ extern float radToDeg;
 extern int rotate_speed;
 extern unsigned long lastIncrementTime;
 extern unsigned long incrementInterval;
+extern unsigned long incrementSlowdownInterval;
+extern int FastLED_fade_counter;
+extern unsigned long lastIncrementLEDTime;
+extern bool fade_led_toggle;
+extern bool should_fade_led;
 
 extern bool vertical_vertex;
 extern bool vertical_edge;
@@ -138,7 +143,6 @@ extern bool ledStateSwitch;
 extern bool init_spin_CW;
 extern bool init_spin_CCW;
 extern float device_heading;
-extern bool motor_direction;
 extern float batteryVoltage;
 extern int motor_speed_previous;
 extern bool turn_off_leds;

@@ -41,7 +41,7 @@ namespace AngleCalibration
 		}
 		GyZ_offset = GyZ_offset_sum >> 9;
 
-		LEDControl::setAllLEDs(CRGB::Red, true, 100);
+		LEDControl::setAllLEDs(CRGB::Crimson, true, 100);
 
 		for (int i = 0; i < 512; i++)
 		{
@@ -61,9 +61,10 @@ namespace AngleCalibration
 		}
 		GyX_offset = GyX_offset_sum >> 9;
 
-		LEDControl::setAllLEDs(CRGB::Green, true, 100);
+		LEDControl::setAllLEDs(CRGB::YellowGreen, true, 100);
 
 		playNotes(4186, 4186, 4186, 100);
+		should_fade_led = true;
 	}
 
 	void angleCalc()
