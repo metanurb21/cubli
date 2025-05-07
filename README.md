@@ -7,6 +7,6 @@ There is experimental code commented out to switch to Dabble API to get gyro and
 
 [YouTube Video](https://youtu.be/nh0DEQ-i9FE?si=mOT0TVhGXHysnrYf)
 
-![ESP32 Cube balancing on vertex.](https://github.com/metanurb21/cubli/blob/main/images/cube-final.jpg)
+![ESP32 Cube balancing on vertex.](https://github.com/metanurb21/cubli/blob/SD/may-2025-final/images/cube-final.jpg)
 
 ![ESP32 cube controller schematic.](https://github.com/metanurb21/cubli/blob/main/images/bb-schematic.png)
