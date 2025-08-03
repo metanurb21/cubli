@@ -10,3 +10,8 @@ There is experimental code commented out to switch to Dabble API to get gyro and
 ![ESP32 Cube balancing on vertex.](https://github.com/metanurb21/cubli/blob/SD/may-2025-final/images/cube-final.jpg)
 
 ![ESP32 cube controller schematic.](https://github.com/metanurb21/cubli/blob/main/images/bb-schematic.png)
+
+
+Added Portl Companion Cube version, video and files.
+
+[YouTube Video](https://youtu.be/9qR-fVPontE)
