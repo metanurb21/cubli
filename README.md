@@ -14,4 +14,4 @@ There is experimental code commented out to switch to Dabble API to get gyro and
 
 Added Portl Companion Cube version, video and files.
 
-coming soon!
+[Portal Companion Cube version video](https://youtu.be/7Q9OggQvg80)
